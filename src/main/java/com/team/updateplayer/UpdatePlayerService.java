@@ -1,6 +1,7 @@
 package com.team.updateplayer;
 
 import com.team.exceptions.MatchesInvalidException;
+import com.team.exceptions.NameAlreadyExistsException;
 import com.team.exceptions.RunsInvalidException;
 import com.team.exceptions.WicketsInvalidException;
 import com.team.exceptions.ZerosInvalidException;
@@ -8,8 +9,13 @@ import com.team.models.Player;
 
 public class UpdatePlayerService {
 	public void updatePlayer(String name, Player player) 
-			throws MatchesInvalidException, RunsInvalidException, WicketsInvalidException, 
+			throws NameAlreadyExistsException, MatchesInvalidException, RunsInvalidException, WicketsInvalidException, 
 			ZerosInvalidException, Exception {
+		if (UpdatePlayerDao.getPlayerByName(player.getName()).next() && !name.equals(player.getName())) {
+			String msg = "The updated name already exists!";
+			throw new NameAlreadyExistsException(msg);
+		}
+		
 		if (isMatchesInvalid(player.getMatches())) {
 			String msg = "Please enter a valid number of matches!";
 			throw new MatchesInvalidException(msg);
@@ -30,7 +36,7 @@ public class UpdatePlayerService {
 			throw new ZerosInvalidException(msg);
 		}
 		
-		if (UpdatePlayerDao.updatePlayerByName(name, UpdatePlayerDao.getPlayerByName(name), player) != 1) {
+		if (UpdatePlayerDao.updatePlayerByName(name, player) != 1) {
 			throw new Exception();
 		}
 	}

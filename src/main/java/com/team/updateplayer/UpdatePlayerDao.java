@@ -14,7 +14,7 @@ public class UpdatePlayerDao {
 		return statement.executeQuery(getPlayerByNameSql);
 	}
 
-	public static int updatePlayerByName(String name, ResultSet resultSet, Player player) throws Exception {
+	public static int updatePlayerByName(String name, Player player) throws Exception {
 		String getPlayerByNameSql = "update Players set Name='" + player.getName() + "', Matches=" + 
 				player.getMatches() + ", Runs=" + player.getRuns() + ", Average=" + player.getAverage() + 
 				", Wickets=" + player.getWickets() + ", Zeros=" + player.getZeros() + " where Name='" + name + "'";

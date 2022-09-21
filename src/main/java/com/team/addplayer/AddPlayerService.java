@@ -1,16 +1,23 @@
 package com.team.addplayer;
 
 import com.team.exceptions.MatchesInvalidException;
+import com.team.exceptions.NameAlreadyExistsException;
 import com.team.exceptions.RunsInvalidException;
 import com.team.exceptions.WicketKeepersLimitReachedException;
 import com.team.exceptions.WicketsInvalidException;
 import com.team.exceptions.ZerosInvalidException;
 import com.team.models.Player;
+import com.team.updateplayer.UpdatePlayerDao;
 
 public class AddPlayerService {
 	public void addPlayer(Player player) 
-			throws MatchesInvalidException, RunsInvalidException, WicketsInvalidException, 
-			ZerosInvalidException, Exception {
+			throws NameAlreadyExistsException, MatchesInvalidException, RunsInvalidException, 
+			WicketsInvalidException, ZerosInvalidException, Exception {
+		if (UpdatePlayerDao.getPlayerByName(player.getName()).next()) {
+			String msg = "The entered name already exists!";
+			throw new NameAlreadyExistsException(msg);
+		}
+		
 		if (isMatchesInvalid(player.getMatches())) {
 			String msg = "Please enter a valid number of matches!";
 			throw new MatchesInvalidException(msg);

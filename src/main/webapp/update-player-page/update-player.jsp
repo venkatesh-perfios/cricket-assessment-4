@@ -9,18 +9,27 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Update Player</title>
+		<style>
+			body {
+				text-align: center;
+				margin: 10%;
+			}
+		</style>
 	</head>
 	<body>
 		<%
 			String name = request.getParameter("name");
 			request.getSession().setAttribute("name", name);
 			ResultSet resultSet = UpdatePlayerDao.getPlayerByName(name);
-			if (!resultSet.next()) {
-				String msg = "Player with the name " + name + " is not found!";
-				out.println(msg);
-			} else {
+			resultSet.next();
 		%>
 		<h1>Existing Player Details</h1>
+		<br>
+		<br>
+		<a href='/cricket/display-all'>View all players</a>
+		<br>
+		<br>
+		<br>
 		<form action="update-player" method="post">
 			Enter name of player: <input type="text" name="name" value="<%= resultSet.getString(1) %>" required>
 			<br>
@@ -35,12 +44,9 @@
 			<br>
 			<br>
 			Enter number of times the player was out for zero runs: <input type="number" step="1" pattern="\d+" name="zeros" value="<%= resultSet.getString(6) %>" required>
-			<br>
+				<br>
 			<br>
 			<input type="submit" value="Submit!">
 		</form>
-		<%
-			}
-		%>
 	</body>
 </html>

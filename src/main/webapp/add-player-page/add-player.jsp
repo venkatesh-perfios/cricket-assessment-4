@@ -7,21 +7,52 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Add Player</title>
+		<style>
+			body {
+				text-align: center;
+				margin: 10%;
+			}
+			
+			a:link, a:visited {
+  				text-decoration: none;
+  				color: blue;
+  				font-family: sans-serif;
+  				font-size: 18px; 
+			}
+		</style>
 	</head>
 	<body>
 		<%
 			int numberOfBowlers = AddPlayerDao.getNumberOfPlayersByType("Bowler");
 			int numberOfWicketKeepers = AddPlayerDao.getNumberOfPlayersByType("Wicket Keeper");
+			Boolean lessMargin = (Boolean) request.getSession().getAttribute("lessMargin");
+			if (lessMargin == null) {
+				lessMargin = false;
+			}
 			
 			if (AddPlayerDao.getNumberOfPlayers() == 20) {
+				if (lessMargin) {
+					request.getSession().setAttribute("lessMargin", false);
 		%>
-		<h1>Cannot add more than 20 players in the squad!</h1>
+		<h1 style="color: red; margin-top: 10%">Cannot add more than 20 players in the squad!</h1>
+		<a href='/cricket/display-all'>View all players</a>
+		<%
+				} else {
+		%>
+		<h1 style="color: red; margin-top: 25%">Cannot add more than 20 players in the squad!</h1>
+		<br>
+		<a href='/cricket/display-all'>View all players</a>
 		<br>
 		<% 
-			} else if (numberOfBowlers < 3) {
+				}
+			} else if (numberOfBowlers < 4) {
 		%>
-		<h1>You must choose at least 3 bowlers in the 20-player squad</h1>
+		<h1>You must choose at least 4 bowlers in the 20-player squad</h1>
 		<h2>So far, you have chosen <%= numberOfBowlers %> bowler(s)</h2>
+		<br>
+		<br>
+		<a href='/cricket/display-all'>View all players</a>
+		<br>
 		<br>
 		<br>
 		<form action="add-player" method="post">
@@ -58,6 +89,10 @@
 		<h1>You must choose 1 wicket keeper in the 20-player squad</h1>
 		<br>
 		<br>
+		<a href='/cricket/display-all'>View all players</a>
+		<br>
+		<br>
+		<br>
 		<form action="add-player" method="post">
 			Enter name of wicket keeper: <input type="text" name="name" required>
 			<br>
@@ -92,11 +127,15 @@
 		<h1>Choose a player to add in the 20-player squad</h1>
 		<br>
 		<br>
+		<a href='/cricket/display-all'>View all players</a>
+		<br>
+		<br>
+		<br>
 		<form action="add-player" method="post">
 			Enter name of player: <input type="text" name="name" required>
 			<br>
 			<br>
-			Enter number of matches played by player: <input type="text" name="matches" required>
+			Enter number of matches played by player: <input type="number" step="1" pattern="\d+" name="matches" required>
 			<br>
 			<br>
 			Enter number of runs scored by player: <input type="number" step="1" pattern="\d+" name="runs" required>

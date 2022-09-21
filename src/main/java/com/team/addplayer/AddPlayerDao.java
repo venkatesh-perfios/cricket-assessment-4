@@ -30,9 +30,9 @@ public class AddPlayerDao {
 	
 	public static int addPlayer(Player player) throws Exception {
 		String addPlayerSql = "insert into " + TABLE_NAME + "(Name, Matches, Runs, Wickets, Average, Zeros, "
-				+ "Type) values('" + player.getName() + "', " +
-				player.getMatches() + ", " + player.getRuns() + ", " + player.getAverage() + ", " +
-				player.getWickets() + ", " + player.getZeros() + ", '" + player.getType() + "')";
+				+ "Type) values('" + player.getName() + "', " + player.getMatches() + ", " + 
+				player.getRuns() + ", " + player.getAverage() + ", " + player.getWickets() + ", " + 
+				player.getZeros() + ", '" + player.getType() + "')";
 		Statement statement = DatabaseUtils.getConnection().createStatement();
 	
 		return statement.executeUpdate(addPlayerSql);
